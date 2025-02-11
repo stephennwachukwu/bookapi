@@ -23,4 +23,4 @@ COPY . /app/
 EXPOSE 8000
 
 # Command to run the application
-CMD ["/bin/sh", "-c", "uvicorn main:app --host 0.0.0.0 --port 7001 --reload"]
+CMD ["/bin/sh", "-c", "uvicorn main:app --host 0.0.0.0 --port 8000 --reload"]
