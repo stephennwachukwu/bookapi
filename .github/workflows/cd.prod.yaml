@@ -31,10 +31,14 @@ jobs:
             # Add the SSH user to the Docker group
             sudo usermod -aG docker ${{ secrets.SSH_USERNAME }}
 
-            # Install Docker Compose
+            # Install Docker Compose and Verify installations
             sudo curl -L "https://github.com/docker/compose/releases/download/v2.20.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
             sudo chmod +x /usr/local/bin/docker-compose
 
-            # Verify installations
             docker --version
             docker-compose --version
+
+            mkdir -p /home/project && cd /home/project
+            git clone https://github.com/stephennwachukwu/bookapi.git && cd bookapi/
+            git switch main
+            docker-compose up -d --build

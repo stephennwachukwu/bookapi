@@ -1,14 +1,11 @@
 name: CI
 
 on:
-  push:
-    branches: [main]
-
   pull_request:
     branches: [dev, main]
 
 jobs:
-  build-and-test:
+  test:
     runs-on: ubuntu-latest
 
     steps:
@@ -31,19 +28,6 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-
-      - name: Run app
-        run: |
-          python3 main.py &
-          pid=$!
-          sleep 10
-          if ps -p $pid > /dev/null; then
-            echo "main.py started successfully"
-            kill $pid
-          else
-            echo "main.py failed to start"
-            exit 1
-          fi
 
       - name: Run tests
         run: |

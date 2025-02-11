@@ -1,5 +1,6 @@
 services:
   fastapi_prod:
+    build: .
     container_name: bookapi-app
     networks:
       - hng-network
