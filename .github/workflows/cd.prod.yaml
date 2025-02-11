@@ -39,6 +39,6 @@ jobs:
             docker-compose --version
 
             # mkdir -p /home/project && cd /home/project
-            git clone https://github.com/stephennwachukwu/bookapi.git && cd bookapi/
-            git switch main
+            cd bookapi && git switch main
+            git pull origin main
             docker-compose up -d --build
