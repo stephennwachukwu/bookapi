@@ -8,11 +8,18 @@ services:
     ports:
       - 8000:8000
     working_dir: /app 
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   nginx:
     image: nginx:latest
     container_name: nginx
     restart: unless-stopped
+    depends_on:
+      - fastapi_prod
     ports:
       - "80:80"
       - "443:443"
