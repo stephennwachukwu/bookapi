@@ -1,0 +1,25 @@
+name: Deploy to production
+on:
+  push:
+    branches: [main]
+jobs:
+  deploy:
+    name: Deploy application
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /home/tester/bookapi
+            git pull origin main
+            python3 -m venv venv
+            source venv/bin/activate
+            pip install --upgrade pip
+            pip install -r requirements.txt
+            sudo systemctl daemon-reload
+            sudo systemctl restart bookapi.service
+            sudo systemctl restart nginx
