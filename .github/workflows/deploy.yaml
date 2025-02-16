@@ -3,10 +3,11 @@ on:
   push:
     branches:
       - main
+permissions:
+  contents: read
 jobs:
   deploy:
-    if: github.event.pull_request == null
-    name: deploy
+    name: Deploy Application
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -19,8 +20,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /home/tester/bookapi
-            git pull origin main
-            git reset --hard origin/main
+            git switch main && git pull origin main
             source venv/bin/activate
             pip install -r requirements.txt
             sudo systemctl daemon-reload
