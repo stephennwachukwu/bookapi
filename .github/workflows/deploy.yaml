@@ -1,25 +1,27 @@
-name: Deploy to production
+name: Deploy
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+permissions:
+  contents: read
 jobs:
   deploy:
-    if: github.event.pull_request == null
-    name: deploy
+    name: Deploy
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@master
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Deploy
+        uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /home/tester/bookapi
-            git pull origin main
-            python3 -m venv venv
+            git switch main && git pull origin main
             source venv/bin/activate
-            pip install --upgrade pip
             pip install -r requirements.txt
             sudo systemctl daemon-reload
             sudo systemctl restart bookapi.service
